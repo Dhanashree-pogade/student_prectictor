@@ -3,9 +3,9 @@ import pickle
 import numpy as np
 from pathlib import Path
 
-# -----------------------------
-# Page configuration
-# -----------------------------
+# =========================================================
+# PAGE CONFIG
+# =========================================================
 st.set_page_config(
     page_title="Student Success Predictor",
     page_icon="🎓",
@@ -13,91 +13,202 @@ st.set_page_config(
     initial_sidebar_state="collapsed",
 )
 
-# -----------------------------
-# Custom styling
-# -----------------------------
+# =========================================================
+# CUSTOM CSS
+# =========================================================
 st.markdown("""
 <style>
+    /* ---------- Main page ---------- */
     .stApp {
-        background: linear-gradient(135deg, #f7f9fc 0%, #eef4ff 100%);
+        background: linear-gradient(135deg, #f6f9ff 0%, #eef4ff 100%);
     }
 
+    .main .block-container {
+        max-width: 1400px;
+        padding-top: 1.5rem;
+        padding-bottom: 3rem;
+    }
+
+    /* ---------- Force readable Streamlit text ---------- */
+    .stApp h1,
+    .stApp h2,
+    .stApp h3,
+    .stApp h4,
+    .stApp p,
+    .stApp label,
+    .stApp .stMarkdown,
+    .stApp .stMarkdown p {
+        color: #172033 !important;
+    }
+
+    .stApp label {
+        font-weight: 600 !important;
+    }
+
+    /* ---------- Hero ---------- */
     .hero {
-        padding: 2.2rem 2.4rem;
-        border-radius: 24px;
-        background: linear-gradient(135deg, #173b7a 0%, #2563eb 55%, #4f8cff 100%);
-        color: white;
-        margin-bottom: 1.5rem;
-        box-shadow: 0 12px 30px rgba(37, 99, 235, 0.20);
+        padding: 2.6rem 2.8rem;
+        border-radius: 26px;
+        background: linear-gradient(
+            135deg,
+            #173b7a 0%,
+            #2563eb 55%,
+            #4f8cff 100%
+        );
+        color: white !important;
+        margin-bottom: 1.6rem;
+        box-shadow: 0 14px 35px rgba(37, 99, 235, 0.22);
     }
 
     .hero h1 {
-        font-size: 2.6rem;
-        margin: 0;
-        font-weight: 800;
+        color: white !important;
+        font-size: 2.65rem !important;
+        font-weight: 800 !important;
+        margin: 0 !important;
+        letter-spacing: -0.8px;
     }
 
     .hero p {
-        font-size: 1.05rem;
-        margin: 0.55rem 0 0;
-        opacity: 0.92;
+        color: rgba(255,255,255,0.92) !important;
+        font-size: 1.05rem !important;
+        margin: 0.65rem 0 0 !important;
     }
 
-    .section-card {
+    /* ---------- Section headings ---------- */
+    .section-title {
+        display: flex;
+        align-items: center;
+        gap: 0.65rem;
+        margin: 1.3rem 0 0.9rem 0;
+        padding: 0.85rem 1rem;
+        border-radius: 14px;
         background: rgba(255,255,255,0.92);
-        padding: 1.35rem;
-        border-radius: 18px;
-        border: 1px solid #e5eaf2;
-        box-shadow: 0 6px 20px rgba(30, 41, 59, 0.06);
-        margin-bottom: 1rem;
+        border: 1px solid #dfe7f3;
+        box-shadow: 0 5px 16px rgba(30, 41, 59, 0.06);
     }
 
+    .section-title .icon {
+        font-size: 1.45rem;
+    }
+
+    .section-title .title {
+        color: #172033 !important;
+        font-size: 1.25rem;
+        font-weight: 800;
+    }
+
+    /* ---------- Inputs ---------- */
+    .stNumberInput,
+    .stSelectbox,
+    .stSlider {
+        margin-bottom: 0.4rem;
+    }
+
+    div[data-baseweb="select"] > div {
+        border-radius: 10px !important;
+    }
+
+    input {
+        color: #172033 !important;
+    }
+
+    /* Slider text/value */
+    .stSlider [data-testid="stTickBarMin"],
+    .stSlider [data-testid="stTickBarMax"],
+    .stSlider [data-testid="stThumbValue"] {
+        color: #172033 !important;
+    }
+
+    /* ---------- Prediction button ---------- */
+    div.stButton > button {
+        width: 100%;
+        min-height: 3.2rem;
+        border-radius: 12px;
+        font-weight: 800;
+        font-size: 1rem;
+        border: none;
+        background: linear-gradient(135deg, #2563eb, #4f46e5);
+        color: white !important;
+        box-shadow: 0 8px 18px rgba(37, 99, 235, 0.22);
+    }
+
+    div.stButton > button:hover {
+        background: linear-gradient(135deg, #1d4ed8, #4338ca);
+        color: white !important;
+        border: none;
+    }
+
+    /* ---------- Result cards ---------- */
     .result-pass {
-        padding: 1.4rem;
+        padding: 1.5rem;
+        margin-top: 1rem;
         border-radius: 18px;
         background: #ecfdf3;
         border: 1px solid #a7f3d0;
-        color: #065f46;
+        color: #065f46 !important;
         text-align: center;
+    }
+
+    .result-pass h2,
+    .result-pass p {
+        color: #065f46 !important;
     }
 
     .result-fail {
-        padding: 1.4rem;
+        padding: 1.5rem;
+        margin-top: 1rem;
         border-radius: 18px;
         background: #fff1f2;
         border: 1px solid #fecdd3;
-        color: #9f1239;
+        color: #9f1239 !important;
         text-align: center;
     }
 
+    .result-fail h2,
+    .result-fail p {
+        color: #9f1239 !important;
+    }
+
+    /* ---------- Metric cards ---------- */
     .metric-box {
         background: white;
-        border: 1px solid #e5eaf2;
+        border: 1px solid #e1e8f2;
         border-radius: 15px;
         padding: 1rem;
         text-align: center;
-        box-shadow: 0 4px 14px rgba(30, 41, 59, 0.05);
+        box-shadow: 0 5px 15px rgba(30, 41, 59, 0.06);
+    }
+
+    .metric-label {
+        color: #64748b !important;
+        font-size: 0.85rem;
+        margin-bottom: 0.25rem;
+    }
+
+    .metric-value {
+        color: #172033 !important;
+        font-size: 1.1rem;
+        font-weight: 800;
     }
 
     .small-note {
-        color: #64748b;
+        color: #64748b !important;
         font-size: 0.9rem;
     }
 
-    div.stButton > button {
-        width: 100%;
-        border-radius: 12px;
-        height: 3rem;
-        font-weight: 700;
-        font-size: 1rem;
+    /* ---------- Footer ---------- */
+    .footer {
+        text-align: center;
+        color: #64748b !important;
+        padding-top: 1rem;
     }
 </style>
 """, unsafe_allow_html=True)
 
 
-# -----------------------------
-# Load model
-# -----------------------------
+# =========================================================
+# LOAD MODEL
+# =========================================================
 MODEL_PATH = Path(__file__).parent / "model.pkl"
 
 
@@ -111,15 +222,15 @@ try:
     model = load_model()
 except Exception:
     st.error(
-        "Unable to load `model.pkl`. Make sure `model.pkl` is in the "
-        "same folder as `app.py`."
+        "Unable to load model.pkl. Make sure model.pkl is in the "
+        "same folder as app.py."
     )
     st.stop()
 
 
-# -----------------------------
-# Header
-# -----------------------------
+# =========================================================
+# HERO
+# =========================================================
 st.markdown("""
 <div class="hero">
     <h1>🎓 Student Success Predictor</h1>
@@ -131,12 +242,15 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 
-# -----------------------------
-# Student Information
-# -----------------------------
-st.markdown('<div class="section-card">', unsafe_allow_html=True)
-
-st.subheader("👤 Student Information")
+# =========================================================
+# STUDENT INFORMATION
+# =========================================================
+st.markdown("""
+<div class="section-title">
+    <span class="icon">👤</span>
+    <span class="title">Student Information</span>
+</div>
+""", unsafe_allow_html=True)
 
 col1, col2, col3 = st.columns(3)
 
@@ -167,20 +281,21 @@ with col3:
             "Department 2",
             "Department 3"
         ],
-        help="Select the department encoding used by your model."
+        help="Select the department encoding used by the model."
     )
 
     department = int(department_label.split()[-1])
 
-st.markdown('</div>', unsafe_allow_html=True)
 
-
-# -----------------------------
-# Academic Performance
-# -----------------------------
-st.markdown('<div class="section-card">', unsafe_allow_html=True)
-
-st.subheader("📚 Academic Performance")
+# =========================================================
+# ACADEMIC PERFORMANCE
+# =========================================================
+st.markdown("""
+<div class="section-title">
+    <span class="icon">📚</span>
+    <span class="title">Academic Performance</span>
+</div>
+""", unsafe_allow_html=True)
 
 col1, col2, col3, col4 = st.columns(4)
 
@@ -228,13 +343,16 @@ final_score = st.slider(
     step=1.0
 )
 
-st.markdown('</div>', unsafe_allow_html=True)
 
-
-# -----------------------------
-# Prediction Button
-# -----------------------------
-st.markdown("### 🔮 Prediction")
+# =========================================================
+# PREDICTION
+# =========================================================
+st.markdown("""
+<div class="section-title">
+    <span class="icon">🔮</span>
+    <span class="title">Prediction</span>
+</div>
+""", unsafe_allow_html=True)
 
 predict_col, info_col = st.columns([1, 2])
 
@@ -253,9 +371,9 @@ with info_col:
     )
 
 
-# -----------------------------
-# Prediction
-# -----------------------------
+# =========================================================
+# RUN PREDICTION
+# =========================================================
 if predict_clicked:
 
     features = np.array([[
@@ -270,104 +388,62 @@ if predict_clicked:
     ]], dtype=float)
 
     try:
-
         prediction = model.predict(features)[0]
-
         prediction_text = str(prediction).strip().lower()
 
-        if prediction_text in {
-            "1", "pass", "passed", "true", "yes"
-        }:
-            result = "PASS"
+        if prediction_text in {"pass", "passed", "1", "true", "yes"}:
             passed = True
+            result = "PASS"
 
-        elif prediction_text in {
-            "0", "fail", "failed", "false", "no"
-        }:
-            result = "FAIL"
+        elif prediction_text in {"fail", "failed", "0", "false", "no"}:
             passed = False
+            result = "FAIL"
 
         else:
-            try:
-                passed = int(prediction) == 1
-                result = "PASS" if passed else "FAIL"
-            except Exception:
-                passed = False
-                result = str(prediction).upper()
+            passed = prediction_text == "pass"
+            result = str(prediction).upper()
 
-
-        # -----------------------------
-        # Probability
-        # -----------------------------
         probability = None
 
         if hasattr(model, "predict_proba"):
-
             probabilities = model.predict_proba(features)[0]
-
-            classes = list(
-                getattr(model, "classes_", [])
-            )
+            classes = list(getattr(model, "classes_", []))
 
             try:
                 predicted_index = classes.index(prediction)
-
             except ValueError:
-                predicted_index = int(
-                    np.argmax(probabilities)
-                )
+                predicted_index = int(np.argmax(probabilities))
 
-            probability = (
-                float(probabilities[predicted_index]) * 100
-            )
+            probability = float(
+                probabilities[predicted_index]
+            ) * 100
 
-
-        # -----------------------------
-        # Result
-        # -----------------------------
         if passed:
-
-            st.markdown(
-                """
-                <div class="result-pass">
-                    <h2>🎉 Predicted Outcome: PASS</h2>
-                    <p>
-                        The model predicts that this student
-                        is likely to pass.
-                    </p>
-                </div>
-                """,
-                unsafe_allow_html=True
-            )
+            st.markdown("""
+            <div class="result-pass">
+                <h2>🎉 Predicted Outcome: PASS</h2>
+                <p>
+                    The model predicts that this student is likely to pass.
+                </p>
+            </div>
+            """, unsafe_allow_html=True)
 
         else:
+            st.markdown("""
+            <div class="result-fail">
+                <h2>⚠️ Predicted Outcome: FAIL</h2>
+                <p>
+                    The model predicts that this student may be at risk
+                    of failing.
+                </p>
+            </div>
+            """, unsafe_allow_html=True)
 
-            st.markdown(
-                """
-                <div class="result-fail">
-                    <h2>⚠️ Predicted Outcome: FAIL</h2>
-                    <p>
-                        The model predicts that this student
-                        may be at risk of failing.
-                    </p>
-                </div>
-                """,
-                unsafe_allow_html=True
-            )
-
-
-        # -----------------------------
-        # Confidence
-        # -----------------------------
         if probability is not None:
-
             st.markdown("### 📊 Model Confidence")
 
             st.progress(
-                min(
-                    max(probability / 100, 0.0),
-                    1.0
-                )
+                min(max(probability / 100, 0.0), 1.0)
             )
 
             st.metric(
@@ -375,10 +451,6 @@ if predict_clicked:
                 f"{probability:.1f}%"
             )
 
-
-        # -----------------------------
-        # Student Snapshot
-        # -----------------------------
         st.markdown("### 📌 Student Snapshot")
 
         metrics = st.columns(5)
@@ -391,75 +463,55 @@ if predict_clicked:
             ("Final", f"{final_score:.0f}")
         ]
 
-        for col, (label, value) in zip(
-            metrics,
-            values
-        ):
-
+        for col, (label, value) in zip(metrics, values):
             with col:
-
                 st.markdown(
                     f"""
                     <div class="metric-box">
-                        <div class="small-note">
-                            {label}
-                        </div>
-                        <strong>
-                            {value}
-                        </strong>
+                        <div class="metric-label">{label}</div>
+                        <div class="metric-value">{value}</div>
                     </div>
                     """,
                     unsafe_allow_html=True
                 )
 
-
-        # -----------------------------
-        # Quick Insight
-        # -----------------------------
         st.markdown("### 💡 Quick Insight")
 
         if attendance < 75:
-
             st.warning(
-                "Attendance is below 75%. Improving attendance "
-                "may support better academic performance."
+                "Attendance is below 75%. Improving attendance may support "
+                "better academic performance."
             )
 
         elif final_score < 50 or midterm < 50:
-
             st.warning(
-                "One or more exam scores are below 50. "
-                "Focus on revision and targeted practice."
+                "One or more exam scores are below 50. Focus on revision "
+                "and targeted practice."
             )
 
         elif study_hours < 2:
-
             st.info(
-                "Study time is relatively low. A consistent "
-                "daily study routine may help."
+                "Study time is relatively low. A consistent daily study "
+                "routine may help."
             )
 
         else:
-
             st.success(
-                "The student's academic indicators look "
-                "reasonably strong."
+                "The student's academic indicators look reasonably strong."
             )
 
-
     except Exception as e:
-
-        st.error(
-            f"Prediction failed: {e}"
-        )
+        st.error(f"Prediction failed: {e}")
 
 
-# -----------------------------
-# Footer
-# -----------------------------
+# =========================================================
+# FOOTER
+# =========================================================
 st.markdown("---")
 
-st.caption(
-    "🎓 Student Success Predictor • "
-    "Powered by your Naive Bayes model"
+st.markdown(
+    '<div class="footer">'
+    '🎓 Student Success Predictor • Powered by your Naive Bayes model'
+    '</div>',
+    unsafe_allow_html=True
 )
