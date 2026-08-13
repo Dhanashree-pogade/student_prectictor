@@ -6,379 +6,328 @@ from pathlib import Path
 # =========================================================
 # PAGE CONFIG
 # =========================================================
+
 st.set_page_config(
     page_title="Student Success Predictor",
     page_icon="🎓",
     layout="wide",
-    initial_sidebar_state="collapsed",
+    initial_sidebar_state="collapsed"
 )
+
 
 # =========================================================
 # CUSTOM CSS
 # =========================================================
-st.markdown("""
+
+st.markdown(
+    """
 <style>
 
-    /* =====================================================
-       MAIN PAGE
-       ===================================================== */
+/* =========================================================
+   PAGE
+   ========================================================= */
 
-    .stApp {
-        background: linear-gradient(
-            135deg,
-            #f6f9ff 0%,
-            #eef4ff 100%
-        );
-    }
+.stApp {
+    background: linear-gradient(135deg, #f5f8ff 0%, #edf3ff 100%);
+}
 
-    .main .block-container {
-        max-width: 1400px;
-        padding-top: 1.5rem;
-        padding-bottom: 3rem;
-    }
-
+.main .block-container {
+    max-width: 1400px;
+    padding-top: 2rem;
+    padding-bottom: 3rem;
+}
 
-    /* =====================================================
-       GENERAL TEXT
-       ===================================================== */
 
-    .stApp h1,
-    .stApp h2,
-    .stApp h3,
-    .stApp h4 {
-        color: #172033 !important;
-    }
-
-    .stApp label {
-        color: #172033 !important;
-        font-weight: 600 !important;
-    }
+/* =========================================================
+   HERO
+   ========================================================= */
 
-    .stMarkdown p {
-        color: #172033;
-    }
+.hero {
+    background: linear-gradient(
+        135deg,
+        #173b7a 0%,
+        #2563eb 55%,
+        #4f8cff 100%
+    );
 
+    padding: 45px 50px;
+    border-radius: 25px;
+    margin-bottom: 28px;
 
-    /* =====================================================
-       HERO HEADER
-       ===================================================== */
+    box-shadow: 0 15px 35px rgba(37, 99, 235, 0.22);
+}
 
-    .hero {
-        padding: 2.7rem 2.8rem;
-        border-radius: 26px;
+.hero h1 {
+    color: white !important;
+    font-size: 2.7rem !important;
+    font-weight: 800 !important;
+    margin: 0 !important;
+}
 
-        background: linear-gradient(
-            135deg,
-            #173b7a 0%,
-            #2563eb 55%,
-            #4f8cff 100%
-        );
+.hero p {
+    color: white !important;
+    font-size: 1.05rem !important;
+    margin-top: 15px !important;
+    margin-bottom: 0 !important;
+}
 
-        margin-bottom: 1.7rem;
 
-        box-shadow:
-            0 14px 35px rgba(37, 99, 235, 0.22);
-    }
+/* =========================================================
+   SECTION HEADER
+   ========================================================= */
 
-    .hero h1 {
-        color: #ffffff !important;
-        font-size: 2.65rem !important;
-        font-weight: 800 !important;
-        margin: 0 !important;
-        letter-spacing: -0.8px;
-    }
+.section-title {
+    display: flex;
+    align-items: center;
+    gap: 12px;
 
-    .hero p {
-        color: #ffffff !important;
-        font-size: 1.05rem !important;
-        margin-top: 0.7rem !important;
-        opacity: 0.95 !important;
-    }
+    background: white;
 
-    .hero * {
-        color: #ffffff !important;
-    }
+    padding: 17px 22px;
 
+    border-radius: 15px;
 
-    /* =====================================================
-       SECTION HEADERS
-       ===================================================== */
+    border: 1px solid #dce5f2;
 
-    .section-title {
-        display: flex;
-        align-items: center;
+    box-shadow: 0 5px 15px rgba(30, 41, 59, 0.06);
 
-        gap: 0.7rem;
+    margin-top: 28px;
+    margin-bottom: 18px;
+}
 
-        margin-top: 1.35rem;
-        margin-bottom: 1rem;
+.section-icon {
+    font-size: 25px;
+}
 
-        padding: 0.9rem 1.1rem;
+.section-text {
+    color: #172033 !important;
+    font-size: 21px;
+    font-weight: 800;
+}
 
-        border-radius: 15px;
 
-        background: #ffffff;
+/* =========================================================
+   LABELS
+   ========================================================= */
 
-        border: 1px solid #dce5f2;
+.stNumberInput label,
+.stSelectbox label,
+.stSlider label {
+    color: #172033 !important;
+    font-weight: 600 !important;
+}
 
-        box-shadow:
-            0 5px 16px rgba(30, 41, 59, 0.06);
-    }
 
-    .section-title .icon {
-        font-size: 1.45rem;
-        line-height: 1;
-    }
+/* =========================================================
+   NUMBER INPUT
+   ========================================================= */
 
-    .section-title .title {
-        color: #172033 !important;
-        font-size: 1.25rem;
-        font-weight: 800;
-    }
+.stNumberInput input {
+    color: white !important;
+    -webkit-text-fill-color: white !important;
 
+    background-color: #252733 !important;
 
-    /* =====================================================
-       INPUT LABELS
-       ===================================================== */
+    border-radius: 10px !important;
+}
 
-    .stNumberInput label,
-    .stSelectbox label,
-    .stSlider label {
-        color: #172033 !important;
-        font-weight: 600 !important;
-    }
 
+/* =========================================================
+   SELECT BOX
+   ========================================================= */
 
-    /* =====================================================
-       NUMBER INPUT
-       ===================================================== */
+div[data-baseweb="select"] {
+    background-color: #252733 !important;
+    border-radius: 10px !important;
+}
 
-    .stNumberInput input {
-        color: #ffffff !important;
-        -webkit-text-fill-color: #ffffff !important;
+div[data-baseweb="select"] > div {
+    background-color: #252733 !important;
+    border-color: #252733 !important;
+    border-radius: 10px !important;
+}
 
-        background-color: #252733 !important;
+div[data-baseweb="select"] span {
+    color: white !important;
+}
 
-        border-radius: 10px !important;
-    }
+div[data-baseweb="select"] input {
+    color: white !important;
+    -webkit-text-fill-color: white !important;
+}
 
-    .stNumberInput input::placeholder {
-        color: #d1d5db !important;
-        -webkit-text-fill-color: #d1d5db !important;
-    }
 
-    .stNumberInput button {
-        color: #ffffff !important;
-    }
+/* =========================================================
+   DROPDOWN OPTIONS
+   ========================================================= */
 
+div[role="listbox"] {
+    background-color: white !important;
+}
 
-    /* =====================================================
-       SELECT BOX
-       ===================================================== */
+div[role="option"] {
+    color: #172033 !important;
+}
 
-    div[data-baseweb="select"] {
-        background-color: #252733 !important;
-        border-radius: 10px !important;
-    }
+div[role="option"]:hover {
+    background-color: #eef4ff !important;
+}
 
-    div[data-baseweb="select"] > div {
-        background-color: #252733 !important;
-        border-radius: 10px !important;
-        border-color: #252733 !important;
-    }
 
-    div[data-baseweb="select"] span {
-        color: #ffffff !important;
-    }
+/* =========================================================
+   SLIDERS
+   ========================================================= */
 
-    div[data-baseweb="select"] input {
-        color: #ffffff !important;
-        -webkit-text-fill-color: #ffffff !important;
-    }
+.stSlider [data-testid="stThumbValue"] {
+    color: #172033 !important;
+}
 
-    /* Dropdown menu */
-    div[role="listbox"] {
-        background-color: #ffffff !important;
-    }
+.stSlider [data-testid="stTickBarMin"],
+.stSlider [data-testid="stTickBarMax"] {
+    color: #64748b !important;
+}
 
-    div[role="option"] {
-        color: #172033 !important;
-    }
 
-    div[role="option"]:hover {
-        background-color: #eef4ff !important;
-    }
+/* =========================================================
+   BUTTON
+   ========================================================= */
 
+div.stButton > button {
+    width: 100%;
+    min-height: 3.2rem;
 
-    /* =====================================================
-       SLIDERS
-       ===================================================== */
+    border-radius: 12px;
 
-    .stSlider label {
-        color: #172033 !important;
-    }
+    background: linear-gradient(
+        135deg,
+        #2563eb,
+        #4f46e5
+    );
 
-    .stSlider [data-testid="stThumbValue"] {
-        color: #172033 !important;
-    }
+    border: none;
 
-    .stSlider [data-testid="stTickBarMin"],
-    .stSlider [data-testid="stTickBarMax"] {
-        color: #64748b !important;
-    }
+    color: white !important;
 
+    font-size: 1rem;
+    font-weight: 800;
 
-    /* =====================================================
-       PREDICTION BUTTON
-       ===================================================== */
+    box-shadow: 0 8px 18px rgba(37, 99, 235, 0.22);
+}
 
-    div.stButton > button {
-        width: 100%;
+div.stButton > button:hover {
+    background: linear-gradient(
+        135deg,
+        #1d4ed8,
+        #4338ca
+    );
+}
 
-        min-height: 3.2rem;
+div.stButton > button p {
+    color: white !important;
+}
 
-        border-radius: 12px;
 
-        font-weight: 800;
-        font-size: 1rem;
+/* =========================================================
+   PASS CARD
+   ========================================================= */
 
-        border: none;
+.pass-card {
+    background: #ecfdf3;
 
-        background: linear-gradient(
-            135deg,
-            #2563eb,
-            #4f46e5
-        );
+    border: 1px solid #a7f3d0;
 
-        color: #ffffff !important;
+    border-radius: 18px;
 
-        box-shadow:
-            0 8px 18px rgba(37, 99, 235, 0.22);
-    }
+    padding: 25px;
 
-    div.stButton > button p {
-        color: #ffffff !important;
-    }
+    margin-top: 20px;
 
-    div.stButton > button:hover {
-        background: linear-gradient(
-            135deg,
-            #1d4ed8,
-            #4338ca
-        );
+    text-align: center;
+}
 
-        color: #ffffff !important;
-    }
+.pass-card h2 {
+    color: #065f46 !important;
+    margin-bottom: 8px;
+}
 
+.pass-card p {
+    color: #047857 !important;
+}
 
-    /* =====================================================
-       PASS RESULT
-       ===================================================== */
 
-    .result-pass {
-        padding: 1.5rem;
+/* =========================================================
+   FAIL CARD
+   ========================================================= */
 
-        margin-top: 1rem;
+.fail-card {
+    background: #fff1f2;
 
-        border-radius: 18px;
+    border: 1px solid #fecdd3;
 
-        background: #ecfdf3;
+    border-radius: 18px;
 
-        border: 1px solid #a7f3d0;
+    padding: 25px;
 
-        text-align: center;
-    }
+    margin-top: 20px;
 
-    .result-pass h2 {
-        color: #065f46 !important;
-    }
+    text-align: center;
+}
 
-    .result-pass p {
-        color: #047857 !important;
-    }
+.fail-card h2 {
+    color: #9f1239 !important;
+    margin-bottom: 8px;
+}
 
+.fail-card p {
+    color: #be123c !important;
+}
 
-    /* =====================================================
-       FAIL RESULT
-       ===================================================== */
 
-    .result-fail {
-        padding: 1.5rem;
+/* =========================================================
+   METRIC CARDS
+   ========================================================= */
 
-        margin-top: 1rem;
+.metric-card {
+    background: white;
 
-        border-radius: 18px;
+    border: 1px solid #e1e8f2;
 
-        background: #fff1f2;
+    border-radius: 15px;
 
-        border: 1px solid #fecdd3;
+    padding: 18px;
 
-        text-align: center;
-    }
+    text-align: center;
 
-    .result-fail h2 {
-        color: #9f1239 !important;
-    }
+    box-shadow: 0 5px 15px rgba(30, 41, 59, 0.06);
+}
 
-    .result-fail p {
-        color: #be123c !important;
-    }
+.metric-label {
+    color: #64748b !important;
+    font-size: 14px;
+    margin-bottom: 5px;
+}
 
+.metric-value {
+    color: #172033 !important;
+    font-size: 20px;
+    font-weight: 800;
+}
 
-    /* =====================================================
-       METRIC CARDS
-       ===================================================== */
 
-    .metric-box {
-        background: #ffffff;
+/* =========================================================
+   FOOTER
+   ========================================================= */
 
-        border: 1px solid #e1e8f2;
-
-        border-radius: 15px;
-
-        padding: 1rem;
-
-        text-align: center;
-
-        box-shadow:
-            0 5px 15px rgba(30, 41, 59, 0.06);
-    }
-
-    .metric-label {
-        color: #64748b !important;
-        font-size: 0.85rem;
-        margin-bottom: 0.25rem;
-    }
-
-    .metric-value {
-        color: #172033 !important;
-        font-size: 1.1rem;
-        font-weight: 800;
-    }
-
-
-    /* =====================================================
-       INFO TEXT
-       ===================================================== */
-
-    .small-note {
-        color: #64748b !important;
-        font-size: 0.9rem;
-    }
-
-
-    /* =====================================================
-       FOOTER
-       ===================================================== */
-
-    .footer {
-        text-align: center;
-        color: #64748b !important;
-        padding-top: 1rem;
-    }
+.footer {
+    text-align: center;
+    color: #64748b !important;
+    padding-top: 15px;
+}
 
 </style>
-""", unsafe_allow_html=True)
+""",
+    unsafe_allow_html=True
+)
 
 
 # =========================================================
@@ -390,66 +339,54 @@ MODEL_PATH = Path(__file__).parent / "model.pkl"
 
 @st.cache_resource
 def load_model():
-
-    with open(MODEL_PATH, "rb") as f:
-        return pickle.load(f)
+    with open(MODEL_PATH, "rb") as file:
+        return pickle.load(file)
 
 
 try:
-
     model = load_model()
 
-except Exception:
-
+except Exception as e:
     st.error(
         "Unable to load model.pkl. "
         "Make sure model.pkl is in the same folder as app.py."
     )
-
     st.stop()
 
 
 # =========================================================
-# HERO HEADER
+# HERO
 # =========================================================
 
-st.markdown("""
+st.markdown(
+    """
 <div class="hero">
-
-    <h1>
-        🎓 Student Success Predictor
-    </h1>
-
-    <p>
-        Predict whether a student is likely to pass
-        based on academic performance and attendance.
-    </p>
-
+<h1>🎓 Student Success Predictor</h1>
+<p>Predict whether a student is likely to pass based on academic performance and attendance.</p>
 </div>
-""", unsafe_allow_html=True)
+""",
+    unsafe_allow_html=True
+)
 
 
 # =========================================================
 # STUDENT INFORMATION
 # =========================================================
 
-st.markdown("""
+st.markdown(
+    """
 <div class="section-title">
-
-    <span class="icon">👤</span>
-
-    <span class="title">
-        Student Information
-    </span>
-
+<span class="section-icon">👤</span>
+<span class="section-text">Student Information</span>
 </div>
-""", unsafe_allow_html=True)
+""",
+    unsafe_allow_html=True
+)
 
 
 col1, col2, col3 = st.columns(3)
 
 
-# AGE
 with col1:
 
     age = st.number_input(
@@ -461,26 +398,17 @@ with col1:
     )
 
 
-# GENDER
 with col2:
 
     gender_label = st.selectbox(
         "Gender",
-        [
-            "Male",
-            "Female"
-        ],
+        ["Male", "Female"],
         help="Encoded as 0 = Male and 1 = Female."
     )
 
-    gender = (
-        0
-        if gender_label == "Male"
-        else 1
-    )
+    gender = 0 if gender_label == "Male" else 1
 
 
-# DEPARTMENT
 with col3:
 
     department_label = st.selectbox(
@@ -503,23 +431,20 @@ with col3:
 # ACADEMIC PERFORMANCE
 # =========================================================
 
-st.markdown("""
+st.markdown(
+    """
 <div class="section-title">
-
-    <span class="icon">📚</span>
-
-    <span class="title">
-        Academic Performance
-    </span>
-
+<span class="section-icon">📚</span>
+<span class="section-text">Academic Performance</span>
 </div>
-""", unsafe_allow_html=True)
+""",
+    unsafe_allow_html=True
+)
 
 
 col1, col2, col3, col4 = st.columns(4)
 
 
-# STUDY HOURS
 with col1:
 
     study_hours = st.number_input(
@@ -531,7 +456,6 @@ with col1:
     )
 
 
-# ATTENDANCE
 with col2:
 
     attendance = st.slider(
@@ -543,7 +467,6 @@ with col2:
     )
 
 
-# ASSIGNMENTS
 with col3:
 
     assignments = st.number_input(
@@ -555,7 +478,6 @@ with col3:
     )
 
 
-# MIDTERM
 with col4:
 
     midterm = st.slider(
@@ -567,7 +489,6 @@ with col4:
     )
 
 
-# FINAL SCORE
 final_score = st.slider(
     "Final Score",
     min_value=0.0,
@@ -581,22 +502,18 @@ final_score = st.slider(
 # PREDICTION SECTION
 # =========================================================
 
-st.markdown("""
+st.markdown(
+    """
 <div class="section-title">
-
-    <span class="icon">🔮</span>
-
-    <span class="title">
-        Prediction
-    </span>
-
+<span class="section-icon">🔮</span>
+<span class="section-text">Prediction</span>
 </div>
-""", unsafe_allow_html=True)
-
-
-predict_col, info_col = st.columns(
-    [1, 2]
+""",
+    unsafe_allow_html=True
 )
+
+
+predict_col, info_col = st.columns([1, 2])
 
 
 with predict_col:
@@ -611,40 +528,38 @@ with info_col:
 
     st.markdown(
         """
-        <p class="small-note">
-            The prediction is generated directly from
-            your Naive Bayes model.
-        </p>
-        """,
+<p style="color:#64748b !important;">
+The prediction is generated directly from your Naive Bayes model.
+</p>
+""",
         unsafe_allow_html=True
     )
 
 
 # =========================================================
-# RUN PREDICTION
+# PREDICTION
 # =========================================================
 
 if predict_clicked:
 
-    features = np.array([[
-        age,
-        gender,
-        department,
-        study_hours,
-        attendance,
-        assignments,
-        midterm,
-        final_score
-    ]], dtype=float)
+    features = np.array(
+        [[
+            age,
+            gender,
+            department,
+            study_hours,
+            attendance,
+            assignments,
+            midterm,
+            final_score
+        ]],
+        dtype=float
+    )
 
 
     try:
 
-        # Make prediction
-        prediction = model.predict(
-            features
-        )[0]
-
+        prediction = model.predict(features)[0]
 
         prediction_text = (
             str(prediction)
@@ -653,7 +568,10 @@ if predict_clicked:
         )
 
 
-        # Determine PASS / FAIL
+        # -------------------------------------------------
+        # PASS / FAIL
+        # -------------------------------------------------
+
         if prediction_text in {
             "pass",
             "passed",
@@ -681,9 +599,9 @@ if predict_clicked:
             )
 
 
-        # =================================================
-        # MODEL PROBABILITY
-        # =================================================
+        # -------------------------------------------------
+        # PROBABILITY
+        # -------------------------------------------------
 
         probability = None
 
@@ -694,10 +612,8 @@ if predict_clicked:
         ):
 
             probabilities = (
-                model
-                .predict_proba(features)[0]
+                model.predict_proba(features)[0]
             )
-
 
             classes = list(
                 getattr(
@@ -710,10 +626,8 @@ if predict_clicked:
 
             try:
 
-                predicted_index = (
-                    classes.index(
-                        prediction
-                    )
+                predicted_index = classes.index(
+                    prediction
                 )
 
             except ValueError:
@@ -730,31 +644,24 @@ if predict_clicked:
                     probabilities[
                         predicted_index
                     ]
-                ) * 100
+                )
+                * 100
             )
 
 
-        # =================================================
-        # RESULT CARD
-        # =================================================
+        # -------------------------------------------------
+        # RESULT
+        # -------------------------------------------------
 
         if passed:
 
             st.markdown(
                 """
-                <div class="result-pass">
-
-                    <h2>
-                        🎉 Predicted Outcome: PASS
-                    </h2>
-
-                    <p>
-                        The model predicts that this
-                        student is likely to pass.
-                    </p>
-
-                </div>
-                """,
+<div class="pass-card">
+<h2>🎉 Predicted Outcome: PASS</h2>
+<p>The model predicts that this student is likely to pass.</p>
+</div>
+""",
                 unsafe_allow_html=True
             )
 
@@ -762,33 +669,24 @@ if predict_clicked:
 
             st.markdown(
                 """
-                <div class="result-fail">
-
-                    <h2>
-                        ⚠️ Predicted Outcome: FAIL
-                    </h2>
-
-                    <p>
-                        The model predicts that this
-                        student may be at risk of failing.
-                    </p>
-
-                </div>
-                """,
+<div class="fail-card">
+<h2>⚠️ Predicted Outcome: FAIL</h2>
+<p>The model predicts that this student may be at risk of failing.</p>
+</div>
+""",
                 unsafe_allow_html=True
             )
 
 
-        # =================================================
+        # -------------------------------------------------
         # CONFIDENCE
-        # =================================================
+        # -------------------------------------------------
 
         if probability is not None:
 
             st.markdown(
                 "### 📊 Model Confidence"
             )
-
 
             st.progress(
                 min(
@@ -800,16 +698,15 @@ if predict_clicked:
                 )
             )
 
-
             st.metric(
                 "Prediction Probability",
                 f"{probability:.1f}%"
             )
 
 
-        # =================================================
-        # STUDENT SNAPSHOT
-        # =================================================
+        # -------------------------------------------------
+        # SNAPSHOT
+        # -------------------------------------------------
 
         st.markdown(
             "### 📌 Student Snapshot"
@@ -820,39 +717,15 @@ if predict_clicked:
 
 
         values = [
-
-            (
-                "Age",
-                f"{age}"
-            ),
-
-            (
-                "Study / Day",
-                f"{study_hours:.1f} h"
-            ),
-
-            (
-                "Attendance",
-                f"{attendance:.0f}%"
-            ),
-
-            (
-                "Midterm",
-                f"{midterm:.0f}"
-            ),
-
-            (
-                "Final",
-                f"{final_score:.0f}"
-            )
-
+            ("Age", f"{age}"),
+            ("Study / Day", f"{study_hours:.1f} h"),
+            ("Attendance", f"{attendance:.0f}%"),
+            ("Midterm", f"{midterm:.0f}"),
+            ("Final", f"{final_score:.0f}")
         ]
 
 
-        for col, (
-            label,
-            value
-        ) in zip(
+        for col, (label, value) in zip(
             metrics,
             values
         ):
@@ -861,25 +734,18 @@ if predict_clicked:
 
                 st.markdown(
                     f"""
-                    <div class="metric-box">
-
-                        <div class="metric-label">
-                            {label}
-                        </div>
-
-                        <div class="metric-value">
-                            {value}
-                        </div>
-
-                    </div>
-                    """,
+<div class="metric-card">
+<div class="metric-label">{label}</div>
+<div class="metric-value">{value}</div>
+</div>
+""",
                     unsafe_allow_html=True
                 )
 
 
-        # =================================================
-        # QUICK INSIGHT
-        # =================================================
+        # -------------------------------------------------
+        # INSIGHT
+        # -------------------------------------------------
 
         st.markdown(
             "### 💡 Quick Insight"
@@ -890,10 +756,8 @@ if predict_clicked:
 
             st.warning(
                 "Attendance is below 75%. "
-                "Improving attendance may support "
-                "better academic performance."
+                "Improving attendance may support better academic performance."
             )
-
 
         elif (
             final_score < 50
@@ -905,7 +769,6 @@ if predict_clicked:
                 "Focus on revision and targeted practice."
             )
 
-
         elif study_hours < 2:
 
             st.info(
@@ -913,12 +776,10 @@ if predict_clicked:
                 "A consistent daily study routine may help."
             )
 
-
         else:
 
             st.success(
-                "The student's academic indicators "
-                "look reasonably strong."
+                "The student's academic indicators look reasonably strong."
             )
 
 
@@ -937,12 +798,9 @@ st.markdown("---")
 
 st.markdown(
     """
-    <div class="footer">
-
-        🎓 Student Success Predictor
-        • Powered by your Naive Bayes model
-
-    </div>
-    """,
+<div class="footer">
+🎓 Student Success Predictor • Powered by your Naive Bayes model
+</div>
+""",
     unsafe_allow_html=True
 )
